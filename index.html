@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pegasushpc by guifre</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Pegasushpc</h1>
+        <p>PegasusHPC is a High Performance Crawler</p>
+
+        <p class="view"><a href="https://github.com/guifre/PegasusHPC">View the Project on GitHub <small>guifre/PegasusHPC</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/guifre/PegasusHPC/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/guifre/PegasusHPC/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/guifre/PegasusHPC">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><a href="http://1.bp.blogspot.com/-5vHYFRBU_Pc/UVICVXlbyUI/AAAAAAAAEKM/v4RE27FcUlA/s1600/g.png"><img border="0" height="151" src="http://1.bp.blogspot.com/-5vHYFRBU_Pc/UVICVXlbyUI/AAAAAAAAEKM/v4RE27FcUlA/s200/g.png" width="165"></a>
+I got vacations last Friday and decided to have fun with parallel computing &amp; networking.<br><br></p>
+
+<h3>
+<b>Introduction</b>
+</h3>
+
+<div>
+I wrote a framework that I called "<a href="http://pegasushpc.googlecode.com/">PegasusHPC is a High Performance Crawler</a>", which is a web spider aimed at allowing high performance and scalability. I chose the image on the left as a tribute to <a href="http://blog.chromium.org/2012/05/tale-of-two-pwnies-part-1.html">pinkie pie</a>, who found critical &amp; amusing bugs in the chromium project.</div>
+<div>
+<br>
+</div>
+<div>
+I think this framework will be useful for me and potentially to other people, since this kind of tools happen to be useful for security testing purposes and other web related ones. It's been open source released and you can find both the first <a href="https://code.google.com/p/pegasushpc/downloads/list">beta release</a> and the <a href="https://code.google.com/p/pegasushpc/source/checkout">code</a> in its <a href="http://pegasushpc.googlecode.com/">web site</a>.</div>
+<br><h3>
+<b>Implementation</b>
+</h3>
+<div>
+To achieve the previous goal, I implemented in PegasusHPC a producer-consumer paradigm, linked blocking queues, hashsets and a master-worker approach in java to allow a natural massive parallelization of the problem.</div>
+<div>
+<br>
+</div>
+In <i>Figure 1</i>, I show a basic high level architecture diagram of PegasusHPC.<br><br><div>
+<a href="http://3.bp.blogspot.com/-sRqe5ldrRRY/UVIHqys0nGI/AAAAAAAAEKU/8L2bmyswHZI/s1600/24z9hco.png"><img border="0" src="http://3.bp.blogspot.com/-sRqe5ldrRRY/UVIHqys0nGI/AAAAAAAAEKU/8L2bmyswHZI/s1600/24z9hco.png" width="530"></a>
+</div>
+<div>
+<b>Figure 1</b>. PegasusHPC Architecture Diagram.</div>
+<div>
+<br>
+</div>
+<div>
+In this approach, the Dispatcher is in charge of creating, handling and stopping the workers. On the other hand, each worker is executed in a different thread to minimize networking I/O idle time. Its implementation has been released with GPLv3 license and can the con can be found in its <a href="https://code.google.com/p/pegasushpc/source/browse/">codebase</a>.</div>
+<div>
+<br>
+</div>
+<div>
+<a href="http://2.bp.blogspot.com/-nDy2P0fDoxU/UVKkdu1olAI/AAAAAAAAEK8/7f2WzL8YmqU/s1600/ui.png"><img border="0" src="http://2.bp.blogspot.com/-nDy2P0fDoxU/UVKkdu1olAI/AAAAAAAAEK8/7f2WzL8YmqU/s1600/ui.png" width="550"></a>
+</div>
+<div>
+</div>
+
+<div>
+<b>Figure 2</b>. PegasusHPC User Interface.</div>
+<div>
+<div>
+<br>
+</div>
+</div>
+
+<div>
+In <i>Figure 2 </i>we show its user interface, the current supported options are:</div>
+
+<ul>
+<b>-t {target}</b> Complete URI of the targeted host i.e. <a href="http://google.com/">http://google.com</a><br><b>-nt</b> <b>{#threads}</b> Number of threads to create. Suggested between 500-10000.<br><b>-max</b> <b>{#URIs}</b> Number of unique URIs to crawl.<br><b>-ipBased</b> to follow links to different domain of the same server.<br><b>-domainBased</b> to target a specific host or path<b><br>-h</b> print the help menu<br>
+</ul><p>Therefore, a common execution will look like <i>$java -Xmx4000m -jar pegaushpc.jar -t <a href="http://youtube.com/"></a><a href="http://youtube.com/">http://youtube.com/</a> -nt 1000 -ipBased -max 10000</i><br><i><br></i>
+<br></p>
+
+<h3>
+<b>Experimentation Results</b>
+</h3>
+
+<p>In order to benchmarking the scalability of PegasusHPC, we carried out some experiments. The environment was the following one:<br></p>
+
+<ul>
+<li>Machine: Laptop i7 8GB ram.</li>
+<li>Bandwidth: 100mbps</li>
+<li>Target: http://microsoft.com</li>
+<li>Max URls: 50000</li>
+<li>#Worker Threads: 1024</li>
+</ul><p><br>
+As a result of the previous test, PegasusHPC wrote two files, the one with the results and a log file with the trace as:
+<br></p>
+
+<pre>2 [main] INFO Target - protocol [http] host[microsoft.com] port[80] path[/]
+
+4 [main] INFO Pegasus  - Targeting [http://microsoft.com/] with [1024]threads and stopping at[50000] results and targetting all subdomains
+
+190 [main] INFO Dispatcher - [OK]Pool of 1024 threads successfully created, party started
+
+192 [main] INFO Dispatcher - [OK]Current unique URIs[1] max urls[50000] idle threads [false] URIs queued [0].
+
+4193 [main] INFO Dispatcher - [OK]Current unique URIs[15] max urls[50000] idle threads [false] URIs queued [0].
+
+6194 [main] INFO Dispatcher - [OK]Current unique URIs[170] max urls[50000] idle threads [false] URIs queued [0].
+...
+193361 [main] INFO Dispatcher - [OK]Current unique URIs[50019] max urls[50000] idle threads [false] URIs queued [66012].
+
+193361 [main] INFO Dispatcher - Results reached, stopping
+
+193371 [main] INFO DataStats - took [193]secs
+
+193372 [main] INFO DataStats - Analyzed [50019] unique pages
+
+193373 [main] INFO DataStats - Found [116031] unique pages
+</pre>
+
+<p><br>
+I made a simple script to parse the previous log file and allow gnuplot to easily get the data.<br></p>
+
+<pre>cut -d ' ' -f2- log.out  | grep Current |awk '{print $7 $9 $15}' | sed -e "s/URIs\\[//g" | sed -e "s/\\]urls\\[/ /g" |$sed -e "s/\\]\\[/ /g" | sed -e "s/\\].//g" &gt; clean.res
+</pre>
+
+<p><br>
+The gnuplot script I developed for the graph is the following one:
+<br></p>
+
+<pre>set title "Target: http://microsoft.com/, Threads: 1024"
+set terminal png
+set output "plot.png"
+set style data linespoints
+set xlabel "Execution Time (seconds)"
+set xrange [1:193]
+set ylabel "Unique #URIs"
+set yrange [1:80000]
+set key left box
+plot "clean.res" using 1 with linespoints ls 1 title "Analyzed URIs", "clean.res" using 3 with linespoints title "Queued URIs"
+</pre>
+
+<p><br>
+The chart that got generated as a result of the previous script running on the cleaned log file is shown in <i>Figure 3</i>.
+<br><br></p>
+
+<div>
+<a href="http://4.bp.blogspot.com/--r-jOmf4Rvs/UVJCK2_MGiI/AAAAAAAAEKo/hPNVZWQ7rE0/s1600/test.png"><img border="0" src="http://4.bp.blogspot.com/--r-jOmf4Rvs/UVJCK2_MGiI/AAAAAAAAEKo/hPNVZWQ7rE0/s1600/test.png" width="95%"></a>
+</div>
+
+<div>
+<b>Figure 3</b>. PegasusHPC URIs Found per Second.</div>
+
+<p><br></p>
+
+<div>
+If we do a simple computation of the previous numbers, we got an average Analysis ratio of <b>259 URIs/second</b> and an average unique URI finding ratio of <b>601 URIs/second</b>, which is not bad for a not so powerful laptop machine. More experiments will be carried out soon.</div>
+
+<div>
+<i><br></i>
+</div>
+
+<div>
+<i><br></i>
+</div>
+
+<div>
+<i><br></i>
+</div>
+
+<div>
+<i><br></i>
+</div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/guifre">guifre</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
