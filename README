@@ -1,0 +1,22 @@
+----------------------------------------
+PegasusHPC is a High Performance Crawler
+----------------------------------------
+Example:  java -Xmx4000m -jar pegaushpc.jar -t http://youtube.com/ -nt 1000 -ipBased -max 2000
+
+-----
+Usage
+-----
+$java -xmX4000m -t {target} -nt {#threads} -max {#URIs} [-ipBased | -domainBased]
+
+    -t {target} Complete URI of the targeted host i.e. http://google.com
+    -nt {#threads} Number of threads to create. Suggested between 500-10000.
+    -max {#URIs} Number of unique URIs to crawl.
+    -[ipBased] to follow links to different domain of the same server.
+    -[domainBased] to target a specific host or path
+
+Use -h for to print this menu
+
+
+Requirements: Java 1.7
+Note: If the queue is all time to 0, it probably means that networking I/O is bottleneck.
+Consider adapting the number of threads and total results if you use a <4GB ram machine
