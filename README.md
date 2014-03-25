@@ -1,5 +1,5 @@
 PegasusHPC is a High Performance Crawler
-======================
+----------
 "PegasusHPC is a High Performance Crawler" is a web crawler aimed at allowing a high throughput spidering and scalability by menas of parallel computing and optimized memory usage. Go to the downloads section to get the last release.
 
 ![PegasusHPC](resources/arch.png)
